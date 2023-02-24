@@ -79,8 +79,9 @@ public class Amigo {
                         break;
                     case 3:
                         System.out.println("Introduce el número ID que quieres modificar");
+                        int idNumero = Integer.parseInt(sc.nextLine());
                         for (int i = 0; i < coleccion.size(); i++) {
-                            if (coleccion.get(i).getuID() == Integer.parseInt(sc.nextLine())){
+                            if (coleccion.get(i).getuID() == idNumero){
                                 System.out.println("Modifica el valor que quieras, deja vacío los que no quieras modificar");
                                 String dato = "";
                                 System.out.println("Introduce el nuevo nombre");
