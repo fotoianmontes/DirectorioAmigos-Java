@@ -6,7 +6,6 @@ public class Amigo {
     private String eMail;
     private Fecha cumpleanios;
     private int uID;
-    private static int id = 1;
 
     public Amigo(String nombre, int telefono, String eMail, Fecha cumpleanios){
         this.nombre = nombre;
@@ -14,27 +13,33 @@ public class Amigo {
         this.eMail = eMail;
         this.cumpleanios = cumpleanios;
         if (new File("coleccion.dat").exists()){
-            try {
-                FileReader fr = new FileReader("coleccion.dat");
-                BufferedReader br = new BufferedReader(fr);
-                FileWriter fw = new FileWriter("coleccion.dat", true);
-                String line = "";
-                while ((line = br.readLine()) != null){
-                    if (Integer.parseInt(line.substring(0,1)) >= id){
-                        id = Integer.parseInt(line.substring(0,1));
-                        id++;
-                    }
-                }
-                br.close();
-                fr.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            uID = getHigherID();
+        } else{
+            uID = 1;
         }
-        uID = id;
-        almacenar();
     }
 
+    private Integer getHigherID(){
+        Integer miInt = null;
+        try {
+            FileReader fr = new FileReader("coleccion.dat");
+            BufferedReader br = new BufferedReader(fr);
+            FileWriter fw = new FileWriter("coleccion.dat", true);
+            String line = "";
+            while ((line = br.readLine()) != null){
+                if (Integer.parseInt(line.substring(0,1)) >= id){
+                    miInt = Integer.parseInt(line.substring(0,1)) + 1;
+                }
+            }
+            br.close();
+            fr.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return miInt;
+    }
+
+}
     public String getNombre() {
         return nombre;
     }
@@ -82,7 +87,7 @@ public class Amigo {
                 '}';
     }
 
-    private void almacenar(){
+    public void Almacenar(){
         String usuarioFormateado = this.uID + " {nombre: '" + this.nombre + "', telefono: '" + this.telefono + "', eMail: '" + this.eMail + "', cumpleanios: '" + this.cumpleanios.toString() + "'}\n";
         File miColeccion = new File("coleccion.dat");
         if (miColeccion.exists()){
